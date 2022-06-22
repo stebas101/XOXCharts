@@ -2,7 +2,26 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+h1, h2 {
+    text-align: center;
+}
+
+form {
+    width: fit-content;
+    text-align: center;
+}
+
 .text-chart {
     font-family: 'Courier New', Courier, monospace;
-    padding: 20px 20px 50px 50px;
+    border: solid black 1px;
+    border-radius: 6px;
+    margin: 20px auto;
+    width: fit-content;
+    padding: 20px 20px;
+    text-align: center;
+}
+
+.chart-container {
+    width: fit-content;
+    margin: 20px auto;
 }

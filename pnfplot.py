@@ -2,15 +2,6 @@ import pandas as pd
 import numpy as np
 
 
-data = pd.read_csv("data/QQQ.csv")
-price_data = data[['High','Low','Close']]
-
-box_size = 10
-reversal_size = 3
-# scale = generate_scale(start=np.floor(price_data['Low'].min()), end=np.ceil(price_data['High'].max()), box_size=box_size)
-scale = np.arange(260,430, 10)
-
-
 def generate_column_range(scale, range_low, range_high):
     '''
     Takes in the high and low extremes of a box range and returns the whole
@@ -29,8 +20,21 @@ def generate_column_range(scale, range_low, range_high):
     return col_range 
 
 # review this function:
-def generate_scale(start, end, box_size=1, method='standard'):
-    scale = np.arange(start=start, stop=high+box_size, step=box_size)
+def generate_scale(start, end, box_size=1, method='linear'):
+    '''
+    Args:
+    - start: float or int
+    - end: float or int
+    - box_size: float or int
+    - method: string in ['linear', 'log', 'standard']
+
+    Returns:
+    - scale: np.array
+    '''
+    if method == 'linear':  
+        scale = np.arange(start=start, stop=end+box_size, step=box_size)
+    else:
+        return "error"
     
     return scale
 
@@ -128,29 +132,6 @@ def update_pnf(scale,
     
     return status, box_range
 
-def pnf_text(scale, columns):
-    '''
-    Generates a text PnF chart
-    
-    Args:
-        scale: np.array
-        columns: list of tuples (int, np.array)
-    Returns:
-        grid: multiline string with lines separated by linefeed
-    '''
-    hpad = 2 # padding columns on the sides
-    marker = {0:'*', 1:'X', -1:'O'}
-    grid = ""
-
-    for line_price in np.flip(scale):
-        line = f'{line_price}' + '.'*hpad
-        for col in columns:
-            line += marker[col[0]] if line_price in col[1] else '.'
-        line += '.' * hpad + f'{line_price}\n'
-        grid += line
-    
-    return grid
-
 
 def process_pnf(price_data, scale, reversal_size):
 
@@ -184,7 +165,13 @@ def process_pnf(price_data, scale, reversal_size):
         status = trend_status[index + start - 1]
         box_l = box_low[index + start - 1]
         box_h = box_high[index + start - 1]
-        status, box_range = update_pnf(scale, high, low, status, reversal_size, box_l, box_h)
+        status, box_range = update_pnf(scale,
+                                        high,
+                                        low,
+                                        status,
+                                        reversal_size,
+                                        box_l,
+                                        box_h)
         trend_status[index+start] = status
         box_low[index+start] = box_range.min()
         box_high[index+start] = box_range.max()
@@ -216,14 +203,73 @@ def process_pnf(price_data, scale, reversal_size):
 
     return columns
 
-def get_chart(): # args needed!
-    # args: data file, scale method, box_size, reversal_size, plot method (hl vs last)
-    # should scale be generated here?
+def get_chart(chart_params):
+    # consider splitting this func in two parts:
+    # one that returns a pnf_data dataframe (h,l,c,b_l,b_h,change)
+    # and another one that takes pnf_data and returns scale and cols
+    # (also splitting process_pnf() )
+    '''
+    Args:
+    - chart_params
+
+    Returns:
+    - scale: np.array
+    - columns: list of tuples (int, np.array)
+    '''
+    data = pd.read_csv('data/'+chart_params['data_file'])
+    price_data = data[['High','Low','Close']]
+    reversal_size = chart_params['reversal_size']
+    box_size = chart_params['box_size']
+
+    # start and end calculation should be devolved to generate_scale,
+    # only max and min should be passed 
+    scale = generate_scale(start=int(np.floor(price_data['Low'].min())),
+                    end=int(np.ceil(price_data['High'].max())), box_size=box_size)
+
     columns = process_pnf(price_data, scale, reversal_size)
 
-    return columns
+    return scale, columns
+
+
+def pnf_text(scale, columns):
+    '''
+    Generates a text PnF chart
+    
+    Args:
+        scale: np.array
+        columns: list of tuples (int, np.array)
+    Returns:
+        grid: multiline string with lines separated by linefeed
+    '''
+    hpad = 2 # padding columns on the sides
+    marker = {0:'*', 1:'X', -1:'O'}
+    grid = ""
+
+    for line_price in np.flip(scale):
+        line = f'{line_price}' + '.' * hpad
+        for col in columns:
+            line += marker[col[0]] if line_price in col[1] else '.'
+        line += '.' * hpad + f'{line_price}\n'
+        grid += line
+    
+    return grid[:-1] # removing the last newline
 
 
 if __name__ == '__main__':
-    columns = get_chart()
+
+    box_size = 10
+    reversal_size = 3
+    data_file = "data/QQQ.csv"
+    plot_method = ""
+    scale_method = 'linear'
+
+    chart_params = {
+        'data_file': data_file,
+        'reversal_size': reversal_size,
+        'box_size': box_size,
+        'plot_method': plot_method,
+        'scale_method': scale_method,
+    }
+
+    scale, columns = get_chart(chart_params)
     print(pnf_text(scale, columns))

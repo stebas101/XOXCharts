@@ -1,11 +1,37 @@
 {% extends 'layout.html' %}
 {% block content %}
     <h1>XOX Point-And-Figure</h1>
-    Home of the <strong>XOX Point-And-Figure project.</strong>
-    <h2>Example chart:</h2>
-    <div class="text-chart">
-        {% for line in chart %}
-            {{ line }}<br/>
-        {% endfor %}
+    <p style="text-align: center">Home of the <strong>XOX Point-And-Figure project.</strong></p>
+    <div class="chart-container">
+    <form method="POST" action="{{ url_for('home') }}">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend>Select File</legend>
+            <div class="form-group">
+                {{ form.chart_select.label(class="form-control-label") }}
+                {{ form.chart_select(class="form-control form-control-lg is-invalid") }}
+            </div>
+            <div class="form-group"></div>
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn-outline-info") }}
+        </div>
+    </form>
+    {% if chart_params %}
+        <h2>Example chart:</h2>
+        <!-- <div class="chart-container"> -->
+            Data file: {{ chart_params['data_file'] }}</br>
+            Reversal: {{ chart_params['reversal_size'] }}</br>
+            Box Size: {{ chart_params['box_size'] }}</br>
+            Scale Method: {{ chart_params['scale_method'] }}</br>
+            Plot Method: {{ chart_params['plot_method'] }}
+            <div class="text-chart">
+                {% for line in chart %}
+                    {{ line }}<br/>
+                {% endfor %}
+            </div>
+        <!-- </div> -->
+    {% endif %}
     </div>
+
 {% endblock %}
