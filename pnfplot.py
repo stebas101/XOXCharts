@@ -61,7 +61,7 @@ def init_pnf(scale,
     '''
     
     if len(box_range) == 0:
-        box_range = scale[np.logical_and(scale>=low, scale<=high)]
+        box_range = scale[np.logical_and(scale>=low, scale<=high)]     
     else:
         box_range = scale[np.logical_and(scale>=min(box_range.min(), low), scale<=max(box_range.max(), high))]
 #         box_range = generate_column_range()
@@ -133,7 +133,7 @@ def update_pnf(scale,
     return status, box_range
 
 
-def process_pnf(price_data, scale, reversal_size):
+def get_pnf_ranges(price_data, scale, reversal_size):
 
     # initialise status and box arrays:
     trend_status = np.zeros(len(price_data))
@@ -159,7 +159,7 @@ def process_pnf(price_data, scale, reversal_size):
 
     # Next, we need to process the remaining lines of price:
     start = index + 1
-    for index, row in enumerate(price_data.loc[start:].iterrows()):
+    for index, row in enumerate(price_data.iloc[start:].iterrows()):
         high = row[1]['High']
         low = row[1]['Low']
         status = trend_status[index + start - 1]
@@ -180,15 +180,27 @@ def process_pnf(price_data, scale, reversal_size):
                             'range_low': box_low,
                             'range_high': box_high
                             })
+    
+    return pnf_data
 
-# I could take this out into a new function (taking pnf_data in):
 
+def get_pnf_changes(pnf_data):
+    '''
+    Args: pd.DataFrame - w/ trend_status, range_low, range_high
+
+    Rethrns: pd.DataFrame - with changes column
+    '''
+    trend_status = pnf_data['trend_status']
     changes = (np.diff(np.sign(trend_status)) != 0)
     # We make sure that the a column is generated for the last price line:
     changes = np.append(changes, [True])
     # Note that the change column is 'shifted': it's True when a status change is detected on the next price line:
     pnf_data['change'] = changes
 
+    return pnf_data
+
+
+def get_pnf_columns(pnf_data, scale):
     ranges = []
     trends = []
 
@@ -203,11 +215,24 @@ def process_pnf(price_data, scale, reversal_size):
 
     return columns
 
+def get_price_data(data_file):
+    '''
+    Args:
+    - String - a csv file name
+
+    - Returns: pd.DataFrame with High, Low, Close
+    - TO DO: return df with Close/Last only
+    '''
+    # TO DO: allow to process data with Close/Last only
+    # TO DO: handle exceptions when file is not found
+    data = pd.read_csv('data/' + data_file, index_col="Date")
+    data.index = pd.to_datetime(data.index) # Converting the dates from string to datetime format
+    price_data = data[['High','Low','Close']]
+
+    return price_data
+
+
 def get_chart(chart_params):
-    # consider splitting this func in two parts:
-    # one that returns a pnf_data dataframe (h,l,c,b_l,b_h,change)
-    # and another one that takes pnf_data and returns scale and cols
-    # (also splitting process_pnf() )
     '''
     Args:
     - chart_params
@@ -216,8 +241,8 @@ def get_chart(chart_params):
     - scale: np.array
     - columns: list of tuples (int, np.array)
     '''
-    data = pd.read_csv('data/'+chart_params['data_file'])
-    price_data = data[['High','Low','Close']]
+    data_file = chart_params['data_file']
+    price_data = get_price_data(data_file)
     reversal_size = chart_params['reversal_size']
     box_size = chart_params['box_size']
 
@@ -226,7 +251,9 @@ def get_chart(chart_params):
     scale = generate_scale(start=int(np.floor(price_data['Low'].min())),
                     end=int(np.ceil(price_data['High'].max())), box_size=box_size)
 
-    columns = process_pnf(price_data, scale, reversal_size)
+    pnf_data = get_pnf_ranges(price_data, scale, reversal_size)
+    pnf_data = get_pnf_changes(pnf_data)
+    columns = get_pnf_columns(pnf_data, scale)
 
     return scale, columns
 
@@ -259,8 +286,8 @@ if __name__ == '__main__':
 
     box_size = 10
     reversal_size = 3
-    data_file = "data/QQQ.csv"
-    plot_method = ""
+    data_file = "QQQ.csv"
+    plot_method = "high-low"
     scale_method = 'linear'
 
     chart_params = {

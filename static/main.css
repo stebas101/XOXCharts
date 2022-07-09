@@ -21,7 +21,7 @@ form {
     text-align: center;
 }
 
-.chart-container {
+.chart-container, .form-container {
     width: fit-content;
-    margin: 20px auto;
+    margin: 30px auto;
 }

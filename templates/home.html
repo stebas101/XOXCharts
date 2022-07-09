@@ -2,7 +2,7 @@
 {% block content %}
     <h1>XOX Point-And-Figure</h1>
     <p style="text-align: center">Home of the <strong>XOX Point-And-Figure project.</strong></p>
-    <div class="chart-container">
+    <div class="form-container">
     <form method="POST" action="{{ url_for('home') }}">
         {{ form.hidden_tag() }}
         <fieldset class="form-group">
@@ -17,21 +17,24 @@
             {{ form.submit(class="btn-outline-info") }}
         </div>
     </form>
+    </div>
     {% if chart_params %}
         <h2>Example chart:</h2>
-        <!-- <div class="chart-container"> -->
+        <div class="chart-container">
             Data file: {{ chart_params['data_file'] }}</br>
-            Reversal: {{ chart_params['reversal_size'] }}</br>
             Box Size: {{ chart_params['box_size'] }}</br>
+            Reversal: {{ chart_params['reversal_size'] }}</br>
             Scale Method: {{ chart_params['scale_method'] }}</br>
-            Plot Method: {{ chart_params['plot_method'] }}
+            Plot Method: {{ chart_params['plot_method'] }}</br>
+            Daily Price</br>
+            From: {{ date_range[0] }}</br>
+            To: {{ date_range[1] }}
             <div class="text-chart">
                 {% for line in chart %}
                     {{ line }}<br/>
                 {% endfor %}
             </div>
-        <!-- </div> -->
+        </div>
     {% endif %}
-    </div>
 
 {% endblock %}
