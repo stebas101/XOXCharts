@@ -1,13 +1,9 @@
 import pandas as pd
-import numpy as np
-from datetime import datetime
-from flask import Flask, render_template, url_for, redirect, request
-from pnfplot import get_chart, get_price_data, pnf_text
-from forms import ChartSelectionForm
+from flask import render_template, url_for, redirect, request
+from xox_pnf import app
+from xox_pnf.pnfplot import get_chart, get_price_data, pnf_text
+from xox_pnf.forms import ChartSelectionForm
 
-
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'aasdfr3434' # Generate new key using secrets
 
 # Dummy data:
 qqq = {
@@ -45,9 +41,6 @@ def home():
         price_data = get_price_data(chart_params['data_file'])
         day1 = price_data.index[0]
         day2 = price_data.index[-1]
-        date_range = [price_data.index[0],
-                    price_data.index[-1]
-                    ]
         day1_str = f'{day1.day_name()}, {day1.day} {day1.month_name()} {day1.year}'
         day2_str = f'{day2.day_name()}, {day2.day} {day2.month_name()} {day2.year}'
         scale, columns = get_chart(chart_params)
@@ -68,7 +61,3 @@ def home():
 @app.route("/about")
 def about():
     return render_template('about.html', title="XOX-PnF - About")
-
-
-if __name__ == "__main__":
-    app.run(debug=True)

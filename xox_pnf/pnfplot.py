@@ -225,7 +225,7 @@ def get_price_data(data_file):
     '''
     # TO DO: allow to process data with Close/Last only
     # TO DO: handle exceptions when file is not found
-    data = pd.read_csv('data/' + data_file, index_col="Date")
+    data = pd.read_csv('xox_pnf/data/' + data_file, index_col="Date")
     data.index = pd.to_datetime(data.index) # Converting the dates from string to datetime format
     price_data = data[['High','Low','Close']]
 
