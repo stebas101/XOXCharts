@@ -5,7 +5,7 @@ from xox_pnf.pnfplot import get_chart, get_price_data, pnf_text
 from xox_pnf.forms import ChartSelectionForm
 
 
-# Dummy data:
+# Hard-coded parameters:
 qqq = {
     'data_file': 'QQQ.csv',
     'reversal_size': 3,
@@ -27,7 +27,14 @@ mmo2 = {
     'plot_method': 'high-low',
     'scale_method': 'linear',
     }
-file_dict = {'qqq': qqq, 'exp1': exp1, 'mmo2': mmo2}
+spy = {
+    'data_file': 'SPY.csv',
+    'reversal_size': 5,
+    'box_size': 2,
+    'plot_method': 'high-low',
+    'scale_method': 'linear',
+}
+file_dict = {'qqq': qqq, 'exp1': exp1, 'mmo2': mmo2, 'spy': spy}
 
 
 @app.route("/", methods=['GET', 'POST'])

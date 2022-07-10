@@ -7,7 +7,8 @@ class ChartSelectionForm(FlaskForm):
     chart_select = SelectField(u'Select chart: ', choices = [
                                         ('qqq', 'QQQ'),
                                         ('exp1', 'Example 1'),
-                                        ('mmo2', 'MMO2')
+                                        ('mmo2', 'MMO2'),
+                                        ('spy', 'SPY')
                                         ]
                                     )
     submit = SubmitField('Get Chart')

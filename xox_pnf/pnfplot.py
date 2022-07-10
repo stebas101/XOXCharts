@@ -19,7 +19,7 @@ def generate_column_range(scale, range_low, range_high):
     
     return col_range 
 
-# review this function:
+
 def generate_scale(start, end, box_size=1, method='linear'):
     '''
     Args:
@@ -59,7 +59,7 @@ def init_pnf(scale,
         status: int (-1,0, or 1)
         box_range: np.array
     '''
-    
+    # TO DO: fix zero-size array error:
     if len(box_range) == 0:
         box_range = scale[np.logical_and(scale>=low, scale<=high)]     
     else:
@@ -153,6 +153,7 @@ def get_pnf_ranges(price_data, scale, reversal_size):
         if status != 0:
             break
 
+    # TO DO:
     # Check if there are more lines of data to process
     # print(index + 1 < len(price_data))
     # return column if not true
