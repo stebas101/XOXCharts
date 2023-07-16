@@ -4,37 +4,8 @@ from xox_pnf import app
 from xox_pnf.pnfplot import get_chart, get_price_data, pnf_text
 from xox_pnf.forms import ChartSelectionForm
 
-
-# Hard-coded parameters:
-qqq = {
-    'data_file': 'QQQ.csv',
-    'reversal_size': 3,
-    'box_size': 10,
-    'plot_method': 'high-low',
-    'scale_method': 'linear',
-}
-exp1 = {
-    'data_file': 'EXP1.csv',
-    'reversal_size': 3,
-    'box_size': 1,
-    'plot_method': 'high-low',
-    'scale_method': 'linear',
-}
-mmo2 = {
-    'data_file': 'MMO2.csv',
-    'reversal_size': 3,
-    'box_size': 1,
-    'plot_method': 'high-low',
-    'scale_method': 'linear',
-    }
-spy = {
-    'data_file': 'SPY.csv',
-    'reversal_size': 5,
-    'box_size': 2,
-    'plot_method': 'high-low',
-    'scale_method': 'linear',
-}
-file_dict = {'qqq': qqq, 'exp1': exp1, 'mmo2': mmo2, 'spy': spy}
+# Hardcoded parameters for testing:
+from xox_pnf.test_parameters import * 
 
 
 @app.route("/", methods=['GET', 'POST'])
