@@ -15,6 +15,8 @@ two build data analysis and machine learning projects;
 - a front-end web app used to select and manage the time series data and to plot the
 point-and-figure chart.
 
+---
+
 ### Depends on:
 - pandas
 - NumPy
@@ -47,14 +49,15 @@ Note: the app runs in *Debug* mode by default, not safe to deploy in live enviro
 
 ---
 
-### To do next:
-- Add *standard* and logarithmic scales
-- Select chart parameters using web form
-- fix *zero-array* error
-- Choose any csv file from the data folder
-- Clean up chart: hide initial *status zero* column
-- Implement Close/Last only method
+### TO dO list:
 - Chart graphics
+- Select chart parameters using web form
+- Add *standard* and logarithmic scales
+- fix *zero-array* error
+- Implement Close/Last only method
+- Choose any csv file from the data folder
+- Handle scales with decimal boxes
+- Clean up chart: hide initial *status zero* column
 - implement proper testing in the /tests folder
 
 ---

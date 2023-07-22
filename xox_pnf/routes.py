@@ -1,4 +1,3 @@
-import pandas as pd
 from flask import render_template, url_for, redirect, request
 from xox_pnf import app
 from xox_pnf.pnfplot import get_chart, get_price_data, pnf_text
@@ -23,7 +22,7 @@ def home():
         day2_str = f'{day2.day_name()}, {day2.day} {day2.month_name()} {day2.year}'
         scale, columns = get_chart(chart_params)
         chart = pnf_text(scale, columns)
-        chart = chart.split('\n')
+        
         return render_template('home.html', title="XOX - Point-And-Figure",
                             chart_params = chart_params,
                             date_range = [day1_str, day2_str],

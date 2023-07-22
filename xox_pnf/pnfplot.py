@@ -277,21 +277,24 @@ def pnf_text(scale, columns):
         scale: np.array
         columns: list of tuples (int, np.array)
     Returns:
-        grid: multiline string with lines separated by linefeed
+        grid: a list of strings (representing chart lines)
     '''
     hpad = 2 # padding columns on the sides
     marker = {0:'*', 1:'X', -1:'O'}
-    grid = ""
+    # grid = ""
+    grid = []
 
     for line_price in np.flip(scale):
         line = f"{line_price}{'.' * hpad}"
         for col in columns:
             line += marker[col[0]] if line_price in col[1] else '.'
-        line += f"{'.' * hpad}{line_price}\n"
-        grid += line
+        line += f"{'.' * hpad}{line_price}"
+        grid.append(line)
     
-    return grid[:-1] # removing the last newline
+    # return grid[:-1] # removing the last newline
+    return grid
 
+# TO DO: functions should be moved within the PnfChart class
 
 class PnfChart():
     
@@ -316,7 +319,7 @@ class PnfChart():
         self.text = pnf_text(self.scale, self.columns)
         
     def __str__(self):
-        return self.text
+        return '\n'.join(self.text)
     
     def __repr__(self):
         return f'PnF chart of {self.symbol}'
