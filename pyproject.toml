@@ -1,0 +1,14 @@
+[project]
+name = "xox_pnf"
+version = "0.0.1"
+description = ""
+dependencies = [
+    "flask",
+    "pandas",
+    "numpy",
+    "wtforms"
+    ]
+
+[build-system]
+requires = ["flit_core<4"]
+build-backend = "flit_core.buildapi"

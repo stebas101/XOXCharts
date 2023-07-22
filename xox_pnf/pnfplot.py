@@ -274,30 +274,10 @@ def pnf_text(scale, columns):
     grid = ""
 
     for line_price in np.flip(scale):
-        line = f'{line_price}' + '.' * hpad
+        line = f"{line_price}{'.' * hpad}"
         for col in columns:
             line += marker[col[0]] if line_price in col[1] else '.'
-        line += '.' * hpad + f'{line_price}\n'
+        line += f"{'.' * hpad}{line_price}\n"
         grid += line
     
     return grid[:-1] # removing the last newline
-
-
-if __name__ == '__main__':
-
-    box_size = 10
-    reversal_size = 3
-    data_file = "QQQ.csv"
-    plot_method = "high-low"
-    scale_method = 'linear'
-
-    chart_params = {
-        'data_file': data_file,
-        'reversal_size': reversal_size,
-        'box_size': box_size,
-        'plot_method': plot_method,
-        'scale_method': scale_method,
-    }
-
-    scale, columns = get_chart(chart_params)
-    print(pnf_text(scale, columns))
