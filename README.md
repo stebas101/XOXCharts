@@ -1,7 +1,7 @@
 XOX-PointAndFigure
 ==================
 
-The **XOX-PointAndFigure** project has two goals: first, to preprocess time series data (prices) to help creating *Point-and-Figure* charts. On the top of that, a web app creates and make visible the actual charts.
+The **XOX-PointAndFigure** project has two goals: first, to preprocess time series data (prices) to help creating *Point-and-Figure* charts. On the top of that, a web app creates and visualizes the actual charts.
 
 *Point-and-Figure* charts are offered in several financial charting software packages available commercially. However, with the exception of some high-end professional products, the version of 
 *Point-and-Figure* charts provided there is a very simplified one and does not capture all the nuances and options
@@ -9,7 +9,7 @@ that this kind of charting technique can offer. Since the exact techniques and r
 those products can vary or be quite obscure, those charts can not be used to implement and test trading systems.
 
 Two project has two main components:
-- a library (`pnfplot`) that processes time series data to preprocess data to
+- a class (`PnfChart`) that takes in time series data to preprocess it and
 build point-and-figure charts. This library is reusable, and its output can be used for pattern recognition and
 two build data analysis and machine learning projects;
 - a front-end web app used to select and manage the time series data and to plot the
@@ -52,9 +52,10 @@ Note: the app runs in *Debug* mode by default, not safe to deploy in live enviro
 - Select chart parameters using web form
 - fix *zero-array* error
 - Choose any csv file from the data folder
-- Clean up chart: hide initial *status zero* column; line padding when high/low is exactly equal to box value
+- Clean up chart: hide initial *status zero* column
 - Implement Close/Last only method
 - Chart graphics
+- implement proper testing in the /tests folder
 
 ---
 

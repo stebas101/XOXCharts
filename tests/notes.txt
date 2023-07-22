@@ -1,0 +1,3 @@
+test:
+
+generate_scale(): series with no decimals in high and/or low

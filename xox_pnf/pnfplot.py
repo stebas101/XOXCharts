@@ -5,7 +5,7 @@ import numpy as np
 def generate_column_range(scale, range_low, range_high):
     '''
     Takes in the high and low extremes of a box range and returns the whole
-    range as a np.array
+    range as a np.array representing a set of boxes
 
     Args:
         scale: np.array
@@ -20,17 +20,23 @@ def generate_column_range(scale, range_low, range_high):
     return col_range 
 
 
-def generate_scale(start, end, box_size=1, method='linear'):
+def generate_scale(low, high, box_size=1, method='linear'):
     '''
     Args:
-    - start: float or int
-    - end: float or int
+    - low: float
+    - high: float
     - box_size: float or int
     - method: string in ['linear', 'log', 'standard']
 
     Returns:
     - scale: np.array
     '''
+
+    # 'padding' the scale with an extra box on the top or bottom in the cases
+    # when the high or low are round numbers - this is to improve the chart visuals
+    start = int(np.floor(low) - box_size) if low.is_integer() else int(np.floor(low))
+    end = int(np.ceil(high) + box_size) if high.is_integer() else int(np.ceil(high))
+
     if method == 'linear':  
         scale = np.arange(start=start, stop=end+box_size, step=box_size)
     else:
@@ -232,7 +238,7 @@ def get_price_data(data_file):
 
     return price_data
 
-
+# TO DO: the next function will be replaced by the pnf_chart object:
 def get_chart(chart_params):
     '''
     Args:
@@ -247,10 +253,12 @@ def get_chart(chart_params):
     reversal_size = chart_params['reversal_size']
     box_size = chart_params['box_size']
 
-    # start and end calculation should be devolved to generate_scale,
-    # only max and min should be passed 
-    scale = generate_scale(start=int(np.floor(price_data['Low'].min())),
-                    end=int(np.ceil(price_data['High'].max())), box_size=box_size)
+    low = price_data['Low'].min()
+    high = price_data['High'].max()
+
+    scale = generate_scale(low,
+                    high,
+                    box_size=box_size)
 
     pnf_data = get_pnf_ranges(price_data, scale, reversal_size)
     pnf_data = get_pnf_changes(pnf_data)
@@ -258,6 +266,8 @@ def get_chart(chart_params):
 
     return scale, columns
 
+# TO DO: the next function should return a list of rows
+# the front end and __str__ function should handle the correct printing
 
 def pnf_text(scale, columns):
     '''
@@ -281,3 +291,32 @@ def pnf_text(scale, columns):
         grid += line
     
     return grid[:-1] # removing the last newline
+
+
+class PnfChart():
+    
+    def __init__(self, chart_params):
+        data_file = chart_params['data_file']
+        self.symbol = data_file[:-4]
+        
+        self.reversal_size = chart_params['reversal_size']
+        self.box_size = chart_params['box_size']
+        self.price_data = get_price_data(data_file)
+        self.first_day = self.price_data.index[0]
+        self.last_day = self.price_data.index[-1]
+        
+        low = self.price_data['Low'].min()
+        high = self.price_data['High'].max()
+        self.scale = generate_scale(low, high, self.box_size)
+        
+        pnf_data = get_pnf_ranges(self.price_data, self.scale, self.reversal_size)
+        self.pnf_data = get_pnf_changes(pnf_data)
+        
+        self.columns = get_pnf_columns(pnf_data, self.scale)        
+        self.text = pnf_text(self.scale, self.columns)
+        
+    def __str__(self):
+        return self.text
+    
+    def __repr__(self):
+        return f'PnF chart of {self.symbol}'
