@@ -2,24 +2,6 @@ import pandas as pd
 import numpy as np
 
 
-def generate_column_range(scale, range_low, range_high):
-    '''
-    Takes in the high and low extremes of a box range and returns the whole
-    range as a np.array representing a set of boxes
-
-    Args:
-        scale: np.array
-        range_low: int or float
-        range_high: into or float
-
-    Returns:
-        col_range: np.array
-    '''
-    col_range = scale[np.logical_and(scale>=range_low, scale<=range_high)]
-    
-    return col_range 
-
-
 def generate_scale(low, high, box_size=1, method='linear'):
     '''
     Args:
@@ -43,6 +25,23 @@ def generate_scale(low, high, box_size=1, method='linear'):
         return "error"
     
     return scale
+
+def generate_column_range(scale, range_low, range_high):
+    '''
+    Takes in the high and low extremes of a box range and returns the whole
+    range as a np.array representing a set of boxes
+
+    Args:
+        scale: np.array
+        range_low: int or float
+        range_high: into or float
+
+    Returns:
+        col_range: np.array
+    '''
+    col_range = scale[np.logical_and(scale>=range_low, scale<=range_high)]
+    
+    return col_range 
 
 def init_pnf(scale,
              high,
@@ -239,32 +238,32 @@ def get_price_data(data_file):
     return price_data
 
 # TO DO: the next function will be replaced by the pnf_chart object:
-def get_chart(chart_params):
-    '''
-    Args:
-    - chart_params
+# def get_chart(chart_params):
+#     '''
+#     Args:
+#     - chart_params
 
-    Returns:
-    - scale: np.array
-    - columns: list of tuples (int, np.array)
-    '''
-    data_file = chart_params['data_file']
-    price_data = get_price_data(data_file)
-    reversal_size = chart_params['reversal_size']
-    box_size = chart_params['box_size']
+#     Returns:
+#     - scale: np.array
+#     - columns: list of tuples (int, np.array)
+#     '''
+#     data_file = chart_params['data_file']
+#     price_data = get_price_data(data_file)
+#     reversal_size = chart_params['reversal_size']
+#     box_size = chart_params['box_size']
 
-    low = price_data['Low'].min()
-    high = price_data['High'].max()
+#     low = price_data['Low'].min()
+#     high = price_data['High'].max()
 
-    scale = generate_scale(low,
-                    high,
-                    box_size=box_size)
+#     scale = generate_scale(low,
+#                     high,
+#                     box_size=box_size)
 
-    pnf_data = get_pnf_ranges(price_data, scale, reversal_size)
-    pnf_data = get_pnf_changes(pnf_data)
-    columns = get_pnf_columns(pnf_data, scale)
+#     pnf_data = get_pnf_ranges(price_data, scale, reversal_size)
+#     pnf_data = get_pnf_changes(pnf_data)
+#     columns = get_pnf_columns(pnf_data, scale)
 
-    return scale, columns
+#     return scale, columns
 
 # TO DO: the next function should return a list of rows
 # the front end and __str__ function should handle the correct printing

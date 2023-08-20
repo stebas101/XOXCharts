@@ -1,11 +1,12 @@
 from flask import render_template, url_for, redirect, request
-from xox_pnf import app
-from xox_pnf.pnfplot import get_chart, get_price_data, pnf_text
-from xox_pnf.forms import ChartSelectionForm
+from . import app
+from .pnfplot import PnfChart
+from .forms import ChartSelectionForm
 
 # Hardcoded parameters for testing:
-from xox_pnf.test_parameters import * 
+from .test_parameters import * 
 
+mode = 'text'
 
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/home", methods=['GET', 'POST'])
@@ -15,18 +16,22 @@ def home():
     if form.validate_on_submit():
         selection = form.chart_select.data
         chart_params = file_dict[selection]
-        price_data = get_price_data(chart_params['data_file'])
-        day1 = price_data.index[0]
-        day2 = price_data.index[-1]
+        pnf_chart = PnfChart(chart_params)
+        day1 = pnf_chart.first_day
+        day2 = pnf_chart.last_day
         day1_str = f'{day1.day_name()}, {day1.day} {day1.month_name()} {day1.year}'
         day2_str = f'{day2.day_name()}, {day2.day} {day2.month_name()} {day2.year}'
-        scale, columns = get_chart(chart_params)
-        chart = pnf_text(scale, columns)
-        
+        chart = pnf_chart.text
+        # chart_data = list(pnf_chart.columns)
+        # chart_scale = list(pnf_chart.scale)
+
         return render_template('home.html', title="XOX - Point-And-Figure",
                             chart_params = chart_params,
                             date_range = [day1_str, day2_str],
                             chart = chart,
+                            mode = mode,
+                            # chart_data = chart_data,
+                            # chart_scale = chart_scale,
                             form = form
                             )
 
