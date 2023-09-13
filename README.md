@@ -49,7 +49,7 @@ Note: the app runs in *Debug* mode by default, not safe to deploy in live enviro
 
 ---
 
-### TO dO list:
+### TO DO list:
 - Chart graphics
 - Select chart parameters using web form
 - Add *standard* and logarithmic scales
@@ -59,6 +59,7 @@ Note: the app runs in *Debug* mode by default, not safe to deploy in live enviro
 - Handle scales with decimal boxes
 - Clean up chart: hide initial *status zero* column
 - implement proper testing in the /tests folder
+- Implement SQLite database for symbol and price data
 
 ---
 

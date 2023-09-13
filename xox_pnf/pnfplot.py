@@ -5,19 +5,21 @@ import numpy as np
 def generate_scale(low, high, box_size=1, method='linear'):
     '''
     Args:
-    - low: float
-    - high: float
+    - low: float or int
+    - high: float or int
     - box_size: float or int
     - method: string in ['linear', 'log', 'standard']
 
     Returns:
     - scale: np.array
     '''
+    # TODO:
+    # - log method
+    # - standard method
 
-    # 'padding' the scale with an extra box on the top or bottom in the cases
-    # when the high or low are round numbers - this is to improve the chart visuals
-    start = int(np.floor(low) - box_size) if low.is_integer() else int(np.floor(low))
-    end = int(np.ceil(high) + box_size) if high.is_integer() else int(np.ceil(high))
+    start = (low // box_size) *  box_size
+    end  = (high // box_size) * box_size + box_size
+    start = (start - box_size) if low % box_size == 0 else start
 
     if method == 'linear':  
         scale = np.arange(start=start, stop=end+box_size, step=box_size)
@@ -303,9 +305,10 @@ class PnfChart():
         
         self.reversal_size = chart_params['reversal_size']
         self.box_size = chart_params['box_size']
+        # self.method - default to linear
         self.price_data = get_price_data(data_file)
-        self.first_day = self.price_data.index[0]
-        self.last_day = self.price_data.index[-1]
+        self.first_day = self.price_data.index[0] # public
+        self.last_day = self.price_data.index[-1] # public
         
         low = self.price_data['Low'].min()
         high = self.price_data['High'].max()
@@ -315,7 +318,7 @@ class PnfChart():
         self.pnf_data = get_pnf_changes(pnf_data)
         
         self.columns = get_pnf_columns(pnf_data, self.scale)        
-        self.text = pnf_text(self.scale, self.columns)
+        self.text = pnf_text(self.scale, self.columns) # public
         
     def __str__(self):
         return '\n'.join(self.text)

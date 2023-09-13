@@ -4,7 +4,12 @@ from .pnfplot import PnfChart
 from .forms import ChartSelectionForm
 
 # Hardcoded parameters for testing:
-from .test_parameters import * 
+from .harcoded_parameters import * 
+# chart_data = [
+#     [1, [36,37, 38, 39, 40]],
+#     [-1, [37, 38, 39]],
+#     [1, [38, 39, 40]]
+#     ]
 
 mode = 'text'
 
@@ -22,7 +27,6 @@ def home():
         day1_str = f'{day1.day_name()}, {day1.day} {day1.month_name()} {day1.year}'
         day2_str = f'{day2.day_name()}, {day2.day} {day2.month_name()} {day2.year}'
         chart = pnf_chart.text
-        # chart_data = list(pnf_chart.columns)
         # chart_scale = list(pnf_chart.scale)
 
         return render_template('home.html', title="XOX - Point-And-Figure",
