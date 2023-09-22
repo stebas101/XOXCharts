@@ -2,32 +2,6 @@ import pandas as pd
 import numpy as np
 
 
-def generate_scale(low, high, box_size=1, method='linear'):
-    '''
-    Args:
-    - low: float or int
-    - high: float or int
-    - box_size: float or int
-    - method: string in ['linear', 'log', 'standard']
-
-    Returns:
-    - scale: np.array
-    '''
-    # TODO:
-    # - log method
-    # - standard method
-
-    start = (low // box_size) *  box_size
-    end  = (high // box_size) * box_size + box_size
-    start = (start - box_size) if low % box_size == 0 else start
-
-    if method == 'linear':  
-        scale = np.arange(start=start, stop=end+box_size, step=box_size)
-    else:
-        return "error"
-    
-    return scale
-
 def generate_column_range(scale, range_low, range_high):
     '''
     Takes in the high and low extremes of a box range and returns the whole
@@ -41,9 +15,10 @@ def generate_column_range(scale, range_low, range_high):
     Returns:
         col_range: np.array
     '''
-    col_range = scale[np.logical_and(scale>=range_low, scale<=range_high)]
+    col_range = scale[np.logical_and(scale >= range_low, scale <= range_high)]
     
     return col_range 
+
 
 def init_pnf(scale,
              high,
@@ -83,6 +58,7 @@ def init_pnf(scale,
         status = 0
         
     return status, box_range
+
 
 def update_pnf(scale,
                high,
@@ -196,7 +172,7 @@ def get_pnf_changes(pnf_data):
     '''
     Args: pd.DataFrame - w/ trend_status, range_low, range_high
 
-    Rethrns: pd.DataFrame - with changes column
+    Returns: pd.DataFrame - with changes column
     '''
     trend_status = pnf_data['trend_status']
     changes = (np.diff(np.sign(trend_status)) != 0)
@@ -223,6 +199,7 @@ def get_pnf_columns(pnf_data, scale):
 
     return columns
 
+
 def get_price_data(data_file):
     '''
     Args:
@@ -239,36 +216,6 @@ def get_price_data(data_file):
 
     return price_data
 
-# TO DO: the next function will be replaced by the pnf_chart object:
-# def get_chart(chart_params):
-#     '''
-#     Args:
-#     - chart_params
-
-#     Returns:
-#     - scale: np.array
-#     - columns: list of tuples (int, np.array)
-#     '''
-#     data_file = chart_params['data_file']
-#     price_data = get_price_data(data_file)
-#     reversal_size = chart_params['reversal_size']
-#     box_size = chart_params['box_size']
-
-#     low = price_data['Low'].min()
-#     high = price_data['High'].max()
-
-#     scale = generate_scale(low,
-#                     high,
-#                     box_size=box_size)
-
-#     pnf_data = get_pnf_ranges(price_data, scale, reversal_size)
-#     pnf_data = get_pnf_changes(pnf_data)
-#     columns = get_pnf_columns(pnf_data, scale)
-
-#     return scale, columns
-
-# TO DO: the next function should return a list of rows
-# the front end and __str__ function should handle the correct printing
 
 def pnf_text(scale, columns):
     '''
@@ -295,7 +242,7 @@ def pnf_text(scale, columns):
     # return grid[:-1] # removing the last newline
     return grid
 
-# TO DO: functions should be moved within the PnfChart class
+# TODO the above functions should be moved within the PnfChart class
 
 class PnfChart():
     
@@ -305,23 +252,91 @@ class PnfChart():
         
         self.reversal_size = chart_params['reversal_size']
         self.box_size = chart_params['box_size']
-        # self.method - default to linear
-        self.price_data = get_price_data(data_file)
-        self.first_day = self.price_data.index[0] # public
-        self.last_day = self.price_data.index[-1] # public
+        self.method = 'linear'
+        self._price_data = get_price_data(data_file)
+        self.first_day = self._price_data.index[0]
+        self.last_day = self._price_data.index[-1]
         
-        low = self.price_data['Low'].min()
-        high = self.price_data['High'].max()
-        self.scale = generate_scale(low, high, self.box_size)
+        low = self._price_data['Low'].min()
+        high = self._price_data['High'].max()
+        params = (low, high, self.box_size, self.method)
+        self.scale = self._get_scale(params)
         
-        pnf_data = get_pnf_ranges(self.price_data, self.scale, self.reversal_size)
+        pnf_data = get_pnf_ranges(self._price_data, self.scale, self.reversal_size)
         self.pnf_data = get_pnf_changes(pnf_data)
         
         self.columns = get_pnf_columns(pnf_data, self.scale)        
-        self.text = pnf_text(self.scale, self.columns) # public
+        self.text = pnf_text(self.scale, self.columns)
         
     def __str__(self):
         return '\n'.join(self.text)
     
     def __repr__(self):
         return f'PnF chart of {self.symbol}'
+
+    def _get_scale(self, params):
+        '''
+        Args:
+        - params: tuple:
+            - low:  float or int
+            - high: float or int
+            - box_size: positive float or int
+            - method: string in ['linear', 'log', 'variable']
+
+        Returns:
+        - scale: np.array
+        '''
+        # TODO:
+        # - log method
+
+        low, high, box_size, method = params
+
+        # table for variable box size
+        # (from, to, box_size)
+        # TODO: the chart must accept custom tables
+        box_size_table = [(0, 6, 0.1),
+                        (6, 14, 0.2),
+                        (14, 29, 0.5),
+                        (29, 60, 1),
+                        (60, 140, 2),
+                        (140, 290, 5),
+                        (290, 600, 10),
+                        (600, 1400, 20)
+                        ]
+
+        def round_ends(low, high, box_size):
+            start = (low // box_size) *  box_size
+            end  = (high // box_size) * box_size + box_size
+            start = (start - box_size) if low % box_size == 0 else start   
+            return start, end    
+
+        # TODO: refactor using match/case - requires Python 3.10
+        if method == 'linear': 
+            start, end = round_ends(low, high, box_size)
+            scale = np.arange(start=start, stop=end+box_size, step=box_size)
+        elif method == 'variable':
+            # round ends
+            for row in box_size_table:
+                a, b, box_size = row
+                if low >= a and low < b:
+                    break
+            start, _ = round_ends(low, high, box_size)
+            start -= box_size
+            for row in box_size_table:
+                a, b, box_size = row
+                if high >= a and high < b:
+                    break
+            _, end = round_ends(low, high, box_size)
+            end += box_size
+
+            # generate scale
+            scale = np.array([])
+            for row in box_size_table:
+                a, b, box_size = row
+                if a <= end and b >= start:
+                    arr = np.arange(max(a, start), min(b, end), box_size)
+                    scale = np.concatenate((scale, arr))
+        elif method == 'log':
+            pass
+                    
+        return scale
