@@ -13,6 +13,7 @@ form {
 
 .text-chart {
     font-family: 'Courier New', Courier, monospace;
+    color: black;
     border: solid black 1px;
     border-radius: 6px;
     margin: 20px auto;

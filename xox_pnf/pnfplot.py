@@ -41,7 +41,7 @@ def init_pnf(scale,
         status: int (-1,0, or 1)
         box_range: np.array
     '''
-    # TO DO: fix zero-size array error:
+    # TODO: fix zero-size array error:
     if len(box_range) == 0:
         box_range = scale[np.logical_and(scale>=low, scale<=high)]     
     else:
@@ -108,11 +108,11 @@ def update_pnf(scale,
         elif high > box_low:
             box_reverse = scale[np.logical_and(scale>=box_low, scale<=high)][1:]
 
-    # Check potentiall reversal agains reversal_size and reverse status if needed:      
+    # Check potential reversal against reversal_size and reverse status if needed:      
     if len(box_reverse) >= reversal_size:
         status *= -1 # reverse trend status
         box_range = box_reverse # update box_range
-    
+
     return status, box_range
 
 
@@ -136,7 +136,7 @@ def get_pnf_ranges(price_data, scale, reversal_size):
         if status != 0:
             break
 
-    # TO DO:
+    # TODO:
     # Check if there are more lines of data to process
     # print(index + 1 < len(price_data))
     # return column if not true
@@ -150,21 +150,21 @@ def get_pnf_ranges(price_data, scale, reversal_size):
         box_l = box_low[index + start - 1]
         box_h = box_high[index + start - 1]
         status, box_range = update_pnf(scale,
-                                        high,
-                                        low,
-                                        status,
-                                        reversal_size,
-                                        box_l,
-                                        box_h)
+                                       high,
+                                       low,
+                                       status,
+                                       reversal_size,
+                                       box_l,
+                                       box_h)
         trend_status[index+start] = status
         box_low[index+start] = box_range.min()
         box_high[index+start] = box_range.max()
 
     pnf_data = pd.DataFrame({'trend_status': trend_status,
-                            'range_low': box_low,
-                            'range_high': box_high
+                             'range_low': box_low,
+                             'range_high': box_high
                             })
-    
+
     return pnf_data
 
 
@@ -191,7 +191,8 @@ def get_pnf_columns(pnf_data, scale):
     # should we use .apply() here?
     for row in pnf_data[pnf_data['change']].iterrows():
         row = row[1]
-        col_range = generate_column_range(scale, row['range_low'], row['range_high'])
+        col_range = generate_column_range(scale,
+                                          row['range_low'], row['range_high'])
         ranges.append(col_range)
         trends.append(row['trend_status'])
 
@@ -208,8 +209,8 @@ def get_price_data(data_file):
     - Returns: pd.DataFrame with High, Low, Close
     - TO DO: return df with Close/Last only
     '''
-    # TO DO: allow to process data with Close/Last only
-    # TO DO: handle exceptions when file is not found
+    # TODO: allow to process data with Close/Last only
+    # TODO: handle exceptions when file is not found
     data = pd.read_csv('xox_pnf/data/' + data_file, index_col="Date")
     data.index = pd.to_datetime(data.index) # Converting the dates from string to datetime format
     price_data = data[['High','Low','Close']]
@@ -229,14 +230,13 @@ def pnf_text(scale, columns):
     '''
     hpad = 2 # padding columns on the sides
     marker = {0:'*', 1:'X', -1:'O'}
-    # grid = ""
     grid = []
 
     for line_price in np.flip(scale):
-        line = f"{line_price}{'.' * hpad}"
+        line = f"{line_price}|{'.' * hpad}"
         for col in columns:
             line += marker[col[0]] if line_price in col[1] else '.'
-        line += f"{'.' * hpad}{line_price}"
+        line += f"{'.' * hpad}|{line_price}"
         grid.append(line)
     
     # return grid[:-1] # removing the last newline
