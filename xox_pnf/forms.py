@@ -11,11 +11,11 @@ class SymbolSelectionForm(FlaskForm):
                                         ('spy', 'SPY')
                                         ]
                                )
+    reversal = SelectField(u'Reversal Size:', choices = list(range(2,6)))
 
     submit = SubmitField('Submit')
 
 class ParamSelectionForm(FlaskForm):
-    reversal = SelectField(u'Reversal Size:', choices = list(range(2,6)))
     # box_size = DecimalField('Box Size')
     # scale_select = RadioField('Scale Type:', choices = [
     #                                     ('Linear', 'linear'),

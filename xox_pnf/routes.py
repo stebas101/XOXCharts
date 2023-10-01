@@ -22,6 +22,7 @@ def home():
         selection = form.chart_select.data
         session['selection'] = selection
         session['chart_params'] = None
+        session['reversal'] = int(form.reversal.data)
 
         # return redirect(url_for('home'))
 
@@ -33,9 +34,8 @@ def home():
     
     if form2.validate_on_submit() and form2.submit.data:
         selection = session.get('selection')
-        reversal = form2.reversal.data
         chart_params = file_dict.get(selection)
-        chart_params['reversal_size'] = int(reversal)
+        chart_params['reversal_size'] = session['reversal']
         pnf_chart = PnfChart(chart_params)
         day1 = pnf_chart.first_day
         day2 = pnf_chart.last_day

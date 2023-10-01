@@ -43,7 +43,7 @@ def init_pnf(scale,
     '''
     # TODO: fix zero-size array error:
     if len(box_range) == 0:
-        box_range = scale[np.logical_and(scale>=low, scale<=high)]     
+        box_range = scale[np.logical_and(scale>=low, scale<=high)]
     else:
         box_range = scale[np.logical_and(scale>=min(box_range.min(), low), scale<=max(box_range.max(), high))]
 #         box_range = generate_column_range()

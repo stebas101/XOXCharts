@@ -13,45 +13,51 @@
       </div>
     </div>
   </div>
-    <div class="form-container">
-    <form method="POST" action="{{ url_for('home') }}">
-        {{ form.hidden_tag() }}
-        <fieldset class="form-group">
-            <legend>Select File</legend>
-            <div class="input-group">
-                {{ form.chart_select.label(class_="input-group-text") }}
-                <!-- {{ form.chart_select(class="form-control form-control-lg is-invalid") }} -->
-                {{ form.chart_select(class_="form-select") }}
-            </div>
-        </fieldset>
-        <br/>
-        <div class="form-group">
-            {{ form.submit(class="btn btn-primary px-4") }}
-        </div>
-    </form>
-    </div>
-    <div class="form-container">
-    {% if selection %}
-        <div class="form-group">
+  <div class="container text-center">
+    <div class="row">
+      <div class="col">&nbsp;</div>
+      <div class="col form-container">
         <form method="POST" action="{{ url_for('home') }}">
+          {{ form.hidden_tag() }}
+          <fieldset class="form-group">
+            <legend>Select File</legend>
+            <div class="input-group mb-3">
+              {{ form.chart_select.label(class_="input-group-text") }}
+              <!-- {{ form.chart_select(class="form-control form-control-lg is-invalid") }} -->
+              {{ form.chart_select(class_="form-select") }}
+            </div>
+            <div class="input-group mb-3">
+              {{ form.reversal.label(class_="input-group-text") }}
+              {{ form.reversal(class_="form-select") }}
+            </div>
+          </fieldset>
+          <br/>
+          <div class="form-group">
+            {{ form.submit(class="btn btn-primary px-4") }}
+          </div>
+        </form>
+      </div>
+      <div class="col form-container">
+        {% if selection %}
+        <div class="form-group">
+          <form method="POST" action="{{ url_for('home') }}">
             {{ form2.hidden_tag() }}
             <legend>Chart Parameters for {{ selection }}</legend>
             <fieldset class="form-group">
-                <div class="input-group mb-3">
-                    {{ form2.reversal.label(class_="input-group-text") }}
-                    {{ form2.reversal(class_="form-select") }}
-                </div>
 
             </fieldset>
             <br/>
             <div class="form-group">
                 {{ form2.submit(class="btn btn-primary px-4") }}
             </div>
-        </form>
+          </form>
         </div>
-    {% endif %}
+        {% endif %}
+      </div>
+      <div class="col">&nbsp;</div>
     </div>
-    {% if chart_params %}
+  </div>
+   {% if chart_params %}
         <h2>Example chart:</h2>
         <div class="chart-container">
             Data file: {{ chart_params['data_file'] }}</br>
