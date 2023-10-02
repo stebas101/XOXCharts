@@ -10,19 +10,20 @@ class SymbolSelectionForm(FlaskForm):
                                         ('mmo2', 'MMO2'),
                                         ('spy', 'SPY')
                                         ]
-                               )
-    reversal = SelectField(u'Reversal Size:', choices = list(range(2,6)))
+                                )
+
+    scale_select = SelectField('Scale Type:', choices = [
+                                        ('linear', 'Linear'),
+                                        # ('Logarithmic', 'log'),
+                                        ('variable', 'Variable')
+                                        ]
+                                )
 
     submit = SubmitField('Submit')
 
 class ParamSelectionForm(FlaskForm):
+    reversal = SelectField(u'Reversal Size:', choices = list(range(2, 6)))
     # box_size = DecimalField('Box Size')
-    # scale_select = RadioField('Scale Type:', choices = [
-    #                                     ('Linear', 'linear'),
-    #                                     # ('Logarithmic', 'log'),
-    #                                     ('Variable', 'variable')
-    #                                     ]
-    #                             )
     # plot_select = RadioField('Plot Method: ', choices = [
     #                                         ('High-Low', 'high-low'),
     #                                         ('Close / Last', 'close')

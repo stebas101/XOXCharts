@@ -23,12 +23,11 @@
             <legend>Select File</legend>
             <div class="input-group mb-3">
               {{ form.chart_select.label(class_="input-group-text") }}
-              <!-- {{ form.chart_select(class="form-control form-control-lg is-invalid") }} -->
               {{ form.chart_select(class_="form-select") }}
             </div>
             <div class="input-group mb-3">
-              {{ form.reversal.label(class_="input-group-text") }}
-              {{ form.reversal(class_="form-select") }}
+              {{ form.scale_select.label(class_="input-group-text") }}
+              {{ form.scale_select(class_="form-select") }}
             </div>
           </fieldset>
           <br/>
@@ -44,7 +43,10 @@
             {{ form2.hidden_tag() }}
             <legend>Chart Parameters for {{ selection }}</legend>
             <fieldset class="form-group">
-
+            <div class="input-group mb-3">
+              {{ form2.reversal.label(class_="input-group-text") }}
+              {{ form2.reversal(class_="form-select") }}
+            </div>
             </fieldset>
             <br/>
             <div class="form-group">

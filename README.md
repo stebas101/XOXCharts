@@ -49,17 +49,18 @@ Note: the app runs in *Debug* mode by default, not safe to deploy in live enviro
 
 ---
 
-### TO DO list:
-- Chart graphics
-- Select chart parameters using web form
-- Add *standard* and logarithmic scales
-- fix *zero-array* error
+### TODO list:
+- Chart parameters using web form
+    align submit button
+    Parameters form changes with chart type
+- Add logarithmic scales
+- fix *zero-array* error (box size out of bounds)
 - Implement Close/Last only method
 - Choose any csv file from the data folder
 - Handle scales with decimal boxes
 - Clean up chart: hide initial *status zero* column
-- implement proper testing in the /tests folder
-- Implement SQLite database for symbol and price data
+- Chart graphics
+- Implement SQL database for symbol and price data
 
 ---
 

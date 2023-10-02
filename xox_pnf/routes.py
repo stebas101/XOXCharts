@@ -4,7 +4,7 @@ from .pnfplot import PnfChart
 from .forms import SymbolSelectionForm, ParamSelectionForm
 
 # Hardcoded parameters for testing:
-from .harcoded_parameters import * 
+from .harcoded_parameters import *
 # chart_data = [
 #     [1, [36,37, 38, 39, 40]],
 #     [-1, [37, 38, 39]],
@@ -22,7 +22,6 @@ def home():
         selection = form.chart_select.data
         session['selection'] = selection
         session['chart_params'] = None
-        session['reversal'] = int(form.reversal.data)
 
         # return redirect(url_for('home'))
 
@@ -31,11 +30,11 @@ def home():
                             form = form,
                             form2 = form2
                             )
-    
+
     if form2.validate_on_submit() and form2.submit.data:
         selection = session.get('selection')
         chart_params = file_dict.get(selection)
-        chart_params['reversal_size'] = session['reversal']
+        chart_params['reversal_size'] = int(form2.reversal.data)
         pnf_chart = PnfChart(chart_params)
         day1 = pnf_chart.first_day
         day2 = pnf_chart.last_day
