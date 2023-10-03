@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, SelectField, RadioField, DecimalField
+from wtforms import SubmitField, SelectField, RadioField, DecimalField, IntegerField
 from wtforms.validators import DataRequired
 
 
@@ -14,7 +14,7 @@ class SymbolSelectionForm(FlaskForm):
 
     scale_select = SelectField('Scale Type:', choices = [
                                         ('linear', 'Linear'),
-                                        # ('Logarithmic', 'log'),
+                                        ('log', 'Logarithmic'),
                                         ('variable', 'Variable')
                                         ]
                                 )
@@ -23,27 +23,9 @@ class SymbolSelectionForm(FlaskForm):
 
 class ParamSelectionForm(FlaskForm):
     reversal = SelectField(u'Reversal Size:', choices = list(range(2, 6)))
-    # box_size = DecimalField('Box Size')
-    # plot_select = RadioField('Plot Method: ', choices = [
-    #                                         ('High-Low', 'high-low'),
-    #                                         ('Close / Last', 'close')
-    #                                         ]
-    #                         )
+    box_size = DecimalField('Box Size')
+    # box_log = IntegerField('% Box')
+    # box_var = SelectField('Table:', choices = ['Standard'])
 
     submit = SubmitField('Generate Chart')
 
-'''
-Add to line 44 of the home template:
-
-                <div class="input-group mb-3">
-                    {{ form2.box_size.label(class_="input-group-text") }}
-                    {{ form2.box_size(class_="form-control") }}
-                </div>
-                Scale Method
-                {% for subfield in form2.scale_select %}
-                    <div class="form-check">
-                        {{ subfield(class_="form-check-input") }}
-                        {{ subfield.label(class_="form-check-label")}}
-                    </div>
-                {% endfor %}
-'''

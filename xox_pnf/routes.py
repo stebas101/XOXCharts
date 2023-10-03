@@ -18,20 +18,30 @@ def home():
     form  = SymbolSelectionForm()
     form2 = ParamSelectionForm()
 
-    if form.validate_on_submit() and form.submit.data:
+    if form.validate_on_submit():
         selection = form.chart_select.data
+        scale_type = form.scale_select.data
         session['selection'] = selection
+        session['scale_type'] = scale_type
         session['chart_params'] = None
+
+        # if scale_type != 'log':
+        #     del form2.box_log
+        # if scale_type != 'variable':
+        #     del form2.box_var
+        # if scale_type != 'linear':
+        #     del form2.box_size
 
         # return redirect(url_for('home'))
 
         return render_template('home.html', title="XOX - Point-And-Figure",
-                            selection = selection,
-                            form = form,
-                            form2 = form2
-                            )
+                                selection = selection,
+                                scale_type = scale_type,
+                                form = form,
+                                form2 = form2
+                                )
 
-    if form2.validate_on_submit() and form2.submit.data:
+    if form2.validate_on_submit():
         selection = session.get('selection')
         chart_params = file_dict.get(selection)
         chart_params['reversal_size'] = int(form2.reversal.data)

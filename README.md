@@ -52,12 +52,13 @@ Note: the app runs in *Debug* mode by default, not safe to deploy in live enviro
 ### TODO list:
 - Chart parameters using web form
     align submit button
+    form validation
     Parameters form changes with chart type
 - Add logarithmic scales
 - fix *zero-array* error (box size out of bounds)
 - Implement Close/Last only method
 - Choose any csv file from the data folder
-- Handle scales with decimal boxes
+- Handle scales with decimal box sizes (based on ***tick)
 - Clean up chart: hide initial *status zero* column
 - Chart graphics
 - Implement SQL database for symbol and price data

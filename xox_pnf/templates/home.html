@@ -43,10 +43,26 @@
             {{ form2.hidden_tag() }}
             <legend>Chart Parameters for {{ selection }}</legend>
             <fieldset class="form-group">
-            <div class="input-group mb-3">
-              {{ form2.reversal.label(class_="input-group-text") }}
-              {{ form2.reversal(class_="form-select") }}
-            </div>
+              <div class="input-group mb-3">
+                {{ form2.reversal.label(class_="input-group-text") }}
+                {{ form2.reversal(class_="form-select") }}
+              </div>
+              {% if scale_type == 'linear'%}
+              <div class="input-group mb-3">
+                  {{ form2.box_size.label(class_="input-group-text") }}
+                  {{ form2.box_size(class_="form-control") }}
+              </div>
+              {% elif scale_type == 'log' %}
+              <div class="input-group mb-3">
+                  {{ form2.box_log.label(class_="input-group-text") }}
+                  {{ form2.box_log(class_="form-control") }}
+              </div>
+              {% else %}
+              <div class="input-group mb-3">
+                  {{ form2.box_var.label(class_="input-group-text") }}
+                  {{ form2.box_var(class_="form-control") }}
+              </div>
+              {% endif %}
             </fieldset>
             <br/>
             <div class="form-group">
