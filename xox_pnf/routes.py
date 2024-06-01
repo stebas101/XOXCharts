@@ -80,4 +80,4 @@ def home():
 
 @app.route("/about")
 def about():
-    return render_template('about.html', title="XOX-PnF - About")
+    return render_template('about.html', title="XOXCharts - About")
