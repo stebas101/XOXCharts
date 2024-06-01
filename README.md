@@ -1,7 +1,7 @@
-XOX-PointAndFigure
-==================
+XOXCharts
+=========
 
-The **XOX-PointAndFigure** project has two goals: first, to preprocess time series data (prices) to help creating *Point-and-Figure* charts. On the top of that, a web app creates and visualizes the actual charts.
+The **XOXCharts** project has two goals: first, to preprocess time series data (prices) to help creating *Point-and-Figure* charts. On the top of that, a web app creates and visualizes the actual charts.
 
 *Point-and-Figure* charts are offered in several financial charting software packages available commercially. However, with the exception of some high-end professional products, the version of 
 *Point-and-Figure* charts provided there is a very simplified one and does not capture all the nuances and options
