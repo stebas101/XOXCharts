@@ -1,6 +1,6 @@
 [project]
-name = "xox_pnf"
-version = "0.0.1"
+name = "xoxcharts"
+version = "2024-06-04"
 description = ""
 dependencies = [
     "flask",

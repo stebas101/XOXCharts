@@ -34,7 +34,7 @@ def home():
 
         # return redirect(url_for('home'))
 
-        return render_template('home.html', title="XOX - Point-And-Figure",
+        return render_template('home.html', title="XOXCharts",
                                 selection = selection,
                                 scale_type = scale_type,
                                 form = form,
@@ -54,7 +54,7 @@ def home():
         session['date_range'] = [day1_str, day2_str]
         session['chart'] = pnf_chart.text
 
-        return render_template('home.html', title="XOX - Point-And-Figure",
+        return render_template('home.html', title="XOXCharts",
                             selection = selection,
                             chart_params = session['chart_params'],
                             date_range = session['date_range'],
@@ -69,7 +69,7 @@ def home():
     session['selection'] = None
     session['chart_params'] = None
 
-    return render_template('home.html', title="XOX - Point-And-Figure",
+    return render_template('home.html', title="XOXCharts",
                             selection = session.get('selection'),
                             chart_params = session.get('chart_params'),
                             date_range = session.get('date_range'),

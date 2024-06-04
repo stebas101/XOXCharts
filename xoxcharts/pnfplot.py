@@ -1,6 +1,21 @@
 import pandas as pd
 import numpy as np
 
+# TODO refactor to a class with the following structure
+#
+# - data : a pandas df - either time series or df
+# - data_type : close only / OHLC
+# - chart
+# ================================================
+# __init__(symbol, source)
+# ________________________________________________
+# 
+# - get_data(symbol, source) -> None (populates data and
+#       data_type)
+# + set_chart() -> None (to set parameters and create chart object)
+# + get_chart() -> (outputs the chart)
+# - generate_column_range
+# .... to complete
 
 def generate_column_range(scale, range_low, range_high):
     '''
@@ -211,7 +226,7 @@ def get_price_data(data_file):
     '''
     # TODO: allow to process data with Close/Last only
     # TODO: handle exceptions when file is not found
-    data = pd.read_csv('xox_pnf/data/' + data_file, index_col="Date")
+    data = pd.read_csv('xoxcharts/data/' + data_file, index_col="Date")
     data.index = pd.to_datetime(data.index) # Converting the dates from string to datetime format
     price_data = data[['High','Low','Close']]
 

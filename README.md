@@ -33,7 +33,7 @@ point-and-figure chart.
 
 This is a development version. To run it, makes sure the dependencies are installed and clone the repository:
 ```
-git clone https://github.com/stebas101/XOX-PointAndFigure
+git clone https://github.com/stebas101/XOXCharts
 ```
 In the repository folder, run it with:
 ```

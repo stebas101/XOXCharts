@@ -1,4 +1,4 @@
-import xox_pnf.pnfplot as pnf
+import xoxcharts.pnfplot as pnf
 import numpy as np
 import pytest
 
