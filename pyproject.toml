@@ -3,11 +3,23 @@ name = "xox_pnf"
 version = "0.0.1"
 description = ""
 dependencies = [
-    "flask",
     "pandas",
-    "numpy",
-    "wtforms"
     ]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-ra -q"
+pythonpath = [
+    "."
+]
+testpaths = [
+    "tests",
+]
 
 [build-system]
 requires = ["flit_core<4"]
