@@ -201,7 +201,17 @@ def load_csv_series(csv_file: str) -> pd.Series:
     data = df[sel_col].copy()
     return data
 
-def round_ends(low, high, box_size):
+def round_ends(low: float, high: float, box_size: float) -> tuple[float, float]:
+    """_summary_
+
+    Args:
+        low (float): _description_
+        high (float): _description_
+        box_size (float): _description_
+
+    Returns:
+        tuple[float, float]: _description_
+    """
     start = (low // box_size) *  box_size
     end  = (high // box_size) * box_size + box_size
     start = (start - box_size) if low % box_size == 0 else start   
