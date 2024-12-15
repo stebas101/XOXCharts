@@ -42,7 +42,7 @@ def test_scale():
     # testing LinearScale
     scale = LinearScale(data, box_size = 1)
     assert scale.type == 'linear'
-    assert scale.length == 3
+    assert scale.length == 4
     
     # testing round_ends
     

@@ -144,6 +144,11 @@ class LinearScale(Scale):
         super().__init__(data)
         self._type = 'linear'
         self._box_size = box_size
+        self.set_scale()
+        
+    @property
+    def box_size(self):
+        return self._box_size
 
     def set_scale(self):
         max_price = self._data.max()
