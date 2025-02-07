@@ -207,7 +207,8 @@ def load_csv_series(csv_file: str) -> pd.Series:
     return data
 
 def round_ends(low: float, high: float, box_size: float) -> tuple[float, float]:
-    """_summary_
+    """Given a range (low, high) and a box_size, this function will return the lowest and highest boxes\
+        in the range boxes of a chart.
 
     Args:
         low (float): _description_
@@ -215,7 +216,7 @@ def round_ends(low: float, high: float, box_size: float) -> tuple[float, float]:
         box_size (float): _description_
 
     Returns:
-        tuple[float, float]: _description_
+        tuple[float, float]: the lowest and highest boxes for the range
     """
     start = (low // box_size) *  box_size
     end  = (high // box_size) * box_size + box_size

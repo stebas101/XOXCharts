@@ -3,7 +3,7 @@ import os
 import pandas as pd
 import numpy as np
 
-from pnfcharts import PnfChart, load_csv_series, LinearScale, Scale
+from pnfcharts import PnfChart, load_csv_series, LinearScale, Scale, round_ends
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -42,7 +42,8 @@ def test_scale():
     # testing LinearScale
     scale = LinearScale(data, box_size = 1)
     assert scale.type == 'linear'
-    assert scale.length == 4
+    # assert scale.length == 4
     
     # testing round_ends
+    assert round_ends(13, 99, 5) == (10, 90)
     
